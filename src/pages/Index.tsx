@@ -115,7 +115,7 @@ export default function Index() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-2">
-                <Icon name="Gamepad2" size={32} className="text-electric-blue" />
+                <img src="https://cdn.poehali.dev/files/ffb0e604-5346-42bf-9290-a4c791a5994a.jpg" alt="Zteam" className="w-8 h-8" />
                 <h1 className="text-2xl font-inter font-bold text-white">Zteam</h1>
               </div>
               
@@ -268,7 +268,7 @@ export default function Index() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Icon name="Gamepad2" size={24} className="text-electric-blue" />
+                <img src="https://cdn.poehali.dev/files/ffb0e604-5346-42bf-9290-a4c791a5994a.jpg" alt="Zteam" className="w-6 h-6" />
                 <span className="text-xl font-inter font-bold text-white">Zteam</span>
               </div>
               <p className="text-gray-400">Ваша игровая площадка №1</p>
