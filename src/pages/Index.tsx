@@ -38,12 +38,12 @@ const featuredGames: Game[] = [
   },
   {
     id: 3,
-    title: "Cosmic Explorer",
+    title: "Helldivers II",
     price: 2199,
     rating: 4.9,
     reviews: 5672,
-    image: "/img/650eecdf-919b-4fb3-949d-8278f9b1eb12.jpg",
-    tags: ["Симулятор", "Космос", "Стратегия"]
+    image: "https://cdn.poehali.dev/files/594cdccb-ec2b-4107-9785-66b7ad2e19ae.jpg",
+    tags: ["Экшен", "Кооператив", "Стрелялка"]
   }
 ];
 
@@ -236,7 +236,7 @@ export default function Index() {
             {[
               { name: "Алексей К.", rating: 5, text: "Отличная площадка! Быстрая загрузка и честные цены.", game: "Cyberpunk 2077" },
               { name: "Мария С.", rating: 5, text: "Купила здесь уже 20+ игр. Всё работает идеально!", game: "Pixel Quest" },
-              { name: "Дмитрий П.", rating: 4, text: "Хороший выбор инди-игр. Рекомендую!", game: "Cosmic Explorer" }
+              { name: "Дмитрий П.", rating: 4, text: "Отличная кооперативная игра! Демократия победит!", game: "Helldivers II" }
             ].map((review, index) => (
               <Card key={index} className="bg-gaming-dark/50 border-gaming-blue/30">
                 <CardContent className="p-6">
