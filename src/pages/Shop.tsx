@@ -38,12 +38,12 @@ const featuredGames: Game[] = [
   },
   {
     id: 3,
-    title: "Helldivers II",
+    title: "Cosmic Explorer",
     price: 2199,
     rating: 4.9,
     reviews: 5672,
-    image: "https://cdn.poehali.dev/files/594cdccb-ec2b-4107-9785-66b7ad2e19ae.jpg",
-    tags: ["Экшен", "Кооператив", "Стрелялка"]
+    image: "/img/650eecdf-919b-4fb3-949d-8278f9b1eb12.jpg",
+    tags: ["Симулятор", "Космос", "Стратегия"]
   }
 ];
 
@@ -106,7 +106,7 @@ const GameCard = ({ game }: { game: Game }) => (
   </Card>
 );
 
-export default function Index() {
+export default function Shop() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gaming-dark to-gaming-blue font-roboto">
       {/* Header */}
@@ -120,8 +120,7 @@ export default function Index() {
               </div>
               
               <nav className="hidden md:flex items-center gap-6">
-                <a href="#" className="text-white hover:text-electric-blue transition-colors font-medium">Главная</a>
-                <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Магазин</a>
+                <a href="#" className="text-white hover:text-electric-blue transition-colors font-medium">Магазин</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Библиотека</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Сообщество</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Скидки</a>
@@ -236,7 +235,7 @@ export default function Index() {
             {[
               { name: "Алексей К.", rating: 5, text: "Отличная площадка! Быстрая загрузка и честные цены.", game: "Cyberpunk 2077" },
               { name: "Мария С.", rating: 5, text: "Купила здесь уже 20+ игр. Всё работает идеально!", game: "Смута" },
-              { name: "Дмитрий П.", rating: 4, text: "Отличная кооперативная игра! Демократия победит!", game: "Helldivers II" }
+              { name: "Дмитрий П.", rating: 4, text: "Хороший выбор инди-игр. Рекомендую!", game: "Cosmic Explorer" }
             ].map((review, index) => (
               <Card key={index} className="bg-gaming-dark/50 border-gaming-blue/30">
                 <CardContent className="p-6">
