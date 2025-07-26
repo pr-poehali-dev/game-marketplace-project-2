@@ -18,7 +18,7 @@ interface Game {
 const featuredGames: Game[] = [
   {
     id: 1,
-    title: "Neon Legends",
+    title: "Cyberpunk 2077",
     price: 1299,
     originalPrice: 1999,
     discount: 35,
@@ -234,7 +234,7 @@ export default function Index() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { name: "Алексей К.", rating: 5, text: "Отличная площадка! Быстрая загрузка и честные цены.", game: "Neon Legends" },
+              { name: "Алексей К.", rating: 5, text: "Отличная площадка! Быстрая загрузка и честные цены.", game: "Cyberpunk 2077" },
               { name: "Мария С.", rating: 5, text: "Купила здесь уже 20+ игр. Всё работает идеально!", game: "Pixel Quest" },
               { name: "Дмитрий П.", rating: 4, text: "Хороший выбор инди-игр. Рекомендую!", game: "Cosmic Explorer" }
             ].map((review, index) => (
