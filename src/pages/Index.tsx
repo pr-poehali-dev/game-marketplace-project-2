@@ -29,12 +29,12 @@ const featuredGames: Game[] = [
   },
   {
     id: 2,
-    title: "Pixel Quest",
+    title: "Смута",
     price: 699,
     rating: 4.6,
     reviews: 1523,
-    image: "/img/74558e78-a24f-4d71-ba03-6b01e63eb0f8.jpg",
-    tags: ["Инди", "Приключения", "Пиксель-арт"]
+    image: "https://cdn.poehali.dev/files/c0e9b133-b698-4a72-86b8-3cf3cbab97b2.jpg",
+    tags: ["Стратегия", "История", "РПГ"]
   },
   {
     id: 3,
@@ -235,7 +235,7 @@ export default function Index() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { name: "Алексей К.", rating: 5, text: "Отличная площадка! Быстрая загрузка и честные цены.", game: "Cyberpunk 2077" },
-              { name: "Мария С.", rating: 5, text: "Купила здесь уже 20+ игр. Всё работает идеально!", game: "Pixel Quest" },
+              { name: "Мария С.", rating: 5, text: "Купила здесь уже 20+ игр. Всё работает идеально!", game: "Смута" },
               { name: "Дмитрий П.", rating: 4, text: "Отличная кооперативная игра! Демократия победит!", game: "Helldivers II" }
             ].map((review, index) => (
               <Card key={index} className="bg-gaming-dark/50 border-gaming-blue/30">
