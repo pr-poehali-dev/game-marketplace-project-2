@@ -116,7 +116,7 @@ export default function Index() {
             <div className="flex items-center gap-8">
               <div className="flex items-center gap-2">
                 <Icon name="Gamepad2" size={32} className="text-electric-blue" />
-                <h1 className="text-2xl font-inter font-bold text-white">GameHub</h1>
+                <h1 className="text-2xl font-inter font-bold text-white">Zteam</h1>
               </div>
               
               <nav className="hidden md:flex items-center gap-6">
@@ -269,7 +269,7 @@ export default function Index() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Icon name="Gamepad2" size={24} className="text-electric-blue" />
-                <span className="text-xl font-inter font-bold text-white">GameHub</span>
+                <span className="text-xl font-inter font-bold text-white">Zteam</span>
               </div>
               <p className="text-gray-400">Ваша игровая площадка №1</p>
             </div>
@@ -309,7 +309,7 @@ export default function Index() {
           </div>
           
           <div className="border-t border-gaming-blue/30 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 GameHub. Все права защищены.</p>
+            <p>&copy; 2024 Zteam. Все права защищены.</p>
           </div>
         </div>
       </footer>
