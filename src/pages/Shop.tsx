@@ -113,27 +113,35 @@ export default function Shop() {
       <header className="border-b border-gaming-blue/30 bg-gaming-dark/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 lg:gap-8">
               <div className="flex items-center gap-2">
-                <img src="https://cdn.poehali.dev/files/ffb0e604-5346-42bf-9290-a4c791a5994a.jpg" alt="Zteam" className="w-8 h-8" />
-                <h1 className="text-2xl font-inter font-bold text-white">Zteam</h1>
+                <img src="https://cdn.poehali.dev/files/ffb0e604-5346-42bf-9290-a4c791a5994a.jpg" alt="Zteam" className="w-6 h-6 sm:w-8 sm:h-8" />
+                <h1 className="text-lg sm:text-2xl font-inter font-bold text-white">Zteam</h1>
               </div>
               
-              <nav className="hidden md:flex items-center gap-6">
-                <a href="#" className="text-white hover:text-electric-blue transition-colors font-medium">Магазин</a>
-                <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Библиотека</a>
+              <nav className="hidden lg:flex items-center gap-6">
+                <a href="/" className="text-white hover:text-electric-blue transition-colors font-medium">Магазин</a>
+                <a href="/profile" className="text-gray-300 hover:text-electric-blue transition-colors">Профиль</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Сообщество</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Скидки</a>
               </nav>
+              
+              <Button variant="ghost" size="icon" className="lg:hidden text-gray-300 hover:text-white">
+                <Icon name="Menu" size={20} />
+              </Button>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Button variant="ghost" size="icon" className="md:hidden text-gray-300 hover:text-white">
+                <Icon name="Search" size={20} />
+              </Button>
+              
               <div className="relative hidden md:block">
                 <Icon name="Search" size={20} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input 
                   type="text" 
                   placeholder="Поиск игр..."
-                  className="pl-10 pr-4 py-2 bg-gaming-blue/30 border border-gaming-blue/50 rounded-lg text-white placeholder:text-gray-400 focus:border-electric-blue focus:outline-none w-64"
+                  className="pl-10 pr-4 py-2 bg-gaming-blue/30 border border-gaming-blue/50 rounded-lg text-white placeholder:text-gray-400 focus:border-electric-blue focus:outline-none w-48 lg:w-64"
                 />
               </div>
               
@@ -141,7 +149,12 @@ export default function Shop() {
                 <Icon name="ShoppingCart" size={20} />
               </Button>
               
-              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="text-gray-300 hover:text-white"
+                onClick={() => window.location.href = '/profile'}
+              >
                 <Icon name="User" size={20} />
               </Button>
             </div>
@@ -150,19 +163,19 @@ export default function Shop() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-4">
+      <section className="relative py-12 sm:py-20 px-4">
         <div className="container mx-auto text-center">
-          <h2 className="text-5xl md:text-6xl font-inter font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-inter font-bold text-white mb-4 sm:mb-6">
             Откройте новые миры
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Тысячи игр, эксклюзивные скидки и сообщество геймеров ждут вас
           </p>
-          <div className="flex gap-4 justify-center">
-            <Button size="lg" className="bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark font-semibold px-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button size="lg" className="bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark font-semibold px-6 sm:px-8 w-full sm:w-auto">
               Исследовать магазин
             </Button>
-            <Button size="lg" variant="outline" className="border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-gaming-dark">
+            <Button size="lg" variant="outline" className="border-electric-blue text-electric-blue hover:bg-electric-blue hover:text-gaming-dark w-full sm:w-auto">
               Топ игр недели
             </Button>
           </div>
