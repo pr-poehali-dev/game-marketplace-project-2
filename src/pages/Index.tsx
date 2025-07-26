@@ -24,7 +24,7 @@ const featuredGames: Game[] = [
     discount: 35,
     rating: 4.8,
     reviews: 2847,
-    image: "/img/b1ca9776-fdc4-41ae-b230-44ae70668ad7.jpg",
+    image: "https://cdn.poehali.dev/files/1d9333da-ca1c-43c0-ae7e-6c006153de2d.jpg",
     tags: ["Экшен", "Киберпанк", "Мультиплеер"]
   },
   {
