@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import Icon from "@/components/ui/icon";
+import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 
 interface Game {
   id: number;
@@ -163,6 +165,7 @@ const AchievementCard = ({ achievement }: { achievement: Achievement }) => {
 };
 
 export default function Profile() {
+  const { state } = useCart();
   const totalHours = userGames.reduce((sum, game) => sum + game.hours, 0);
   const totalAchievements = achievements.filter(a => a.unlocked).length;
 
@@ -179,8 +182,9 @@ export default function Profile() {
               </div>
               
               <nav className="hidden lg:flex items-center gap-6">
-                <a href="/" className="text-gray-300 hover:text-electric-blue transition-colors">Магазин</a>
-                <a href="/profile" className="text-white hover:text-electric-blue transition-colors font-medium">Профиль</a>
+                <Link to="/" className="text-gray-300 hover:text-electric-blue transition-colors">Магазин</Link>
+                <Link to="/profile" className="text-white hover:text-electric-blue transition-colors font-medium">Профиль</Link>
+                <Link to="/cart" className="text-gray-300 hover:text-electric-blue transition-colors">Корзина</Link>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Сообщество</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Скидки</a>
               </nav>
@@ -204,13 +208,22 @@ export default function Profile() {
                 />
               </div>
               
-              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                <Icon name="ShoppingCart" size={20} />
-              </Button>
+              <Link to="/cart" className="relative">
+                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
+                  <Icon name="ShoppingCart" size={20} />
+                  {state.items.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-electric-blue text-gaming-dark text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                      {state.items.reduce((sum, item) => sum + item.quantity, 0)}
+                    </span>
+                  )}
+                </Button>
+              </Link>
               
-              <Button variant="ghost" size="icon" className="text-electric-blue">
-                <Icon name="User" size={20} />
-              </Button>
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className="text-electric-blue">
+                  <Icon name="User" size={20} />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

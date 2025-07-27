@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import { useCart } from "@/contexts/CartContext";
+import { Link } from "react-router-dom";
 
 interface Game {
   id: number;
@@ -13,6 +15,7 @@ interface Game {
   reviews: number;
   image: string;
   tags: string[];
+  description: string;
 }
 
 const featuredGames: Game[] = [
@@ -25,7 +28,8 @@ const featuredGames: Game[] = [
     rating: 4.8,
     reviews: 2847,
     image: "https://cdn.poehali.dev/files/1d9333da-ca1c-43c0-ae7e-6c006153de2d.jpg",
-    tags: ["Экшен", "Киберпанк", "Мультиплеер"]
+    tags: ["Экшен", "Киберпанк", "Мультиплеер"],
+    description: "Футуристическая RPG в мире киберпанка с открытым миром и захватывающим сюжетом."
   },
   {
     id: 2,
@@ -34,7 +38,8 @@ const featuredGames: Game[] = [
     rating: 4.6,
     reviews: 1523,
     image: "https://cdn.poehali.dev/files/c0e9b133-b698-4a72-86b8-3cf3cbab97b2.jpg",
-    tags: ["Стратегия", "История", "РПГ"]
+    tags: ["Стратегия", "История", "РПГ"],
+    description: "Историческая стратегия о периоде Смутного времени в России с элементами RPG."
   },
   {
     id: 3,
@@ -43,11 +48,20 @@ const featuredGames: Game[] = [
     rating: 4.9,
     reviews: 5672,
     image: "/img/650eecdf-919b-4fb3-949d-8278f9b1eb12.jpg",
-    tags: ["Симулятор", "Космос", "Стратегия"]
+    tags: ["Симулятор", "Космос", "Стратегия"],
+    description: "Космический симулятор исследования галактики с реалистичной физикой и управлением ресурсами."
   }
 ];
 
-const GameCard = ({ game }: { game: Game }) => (
+const GameCard = ({ game }: { game: Game }) => {
+  const { addToCart, state } = useCart();
+  const isInCart = state.items.some(item => item.id === game.id);
+
+  const handleAddToCart = () => {
+    addToCart(game);
+  };
+
+  return (
   <Card className="group overflow-hidden border-0 bg-gaming-dark/50 hover:bg-gaming-dark/70 transition-all duration-300 hover:scale-105">
     <div className="relative">
       <img 
@@ -98,15 +112,34 @@ const GameCard = ({ game }: { game: Game }) => (
             {game.price}₽
           </span>
         </div>
-        <Button className="bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark font-semibold">
-          В корзину
+        <Button 
+          className={`font-semibold transition-all duration-300 ${
+            isInCart 
+              ? 'bg-green-600 hover:bg-green-700 text-white' 
+              : 'bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark'
+          }`}
+          onClick={handleAddToCart}
+        >
+          {isInCart ? (
+            <>
+              <Icon name="Check" size={16} className="mr-2" />
+              В корзине
+            </>
+          ) : (
+            <>
+              <Icon name="ShoppingCart" size={16} className="mr-2" />
+              В корзину
+            </>
+          )}
         </Button>
       </div>
     </CardContent>
   </Card>
-);
+  );
+};
 
 export default function Shop() {
+  const { state } = useCart();
   return (
     <div className="min-h-screen bg-gradient-to-br from-gaming-dark to-gaming-blue font-roboto">
       {/* Header */}
@@ -120,8 +153,9 @@ export default function Shop() {
               </div>
               
               <nav className="hidden lg:flex items-center gap-6">
-                <a href="/" className="text-white hover:text-electric-blue transition-colors font-medium">Магазин</a>
-                <a href="/profile" className="text-gray-300 hover:text-electric-blue transition-colors">Профиль</a>
+                <Link to="/" className="text-white hover:text-electric-blue transition-colors font-medium">Магазин</Link>
+                <Link to="/profile" className="text-gray-300 hover:text-electric-blue transition-colors">Профиль</Link>
+                <Link to="/cart" className="text-gray-300 hover:text-electric-blue transition-colors">Корзина</Link>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Сообщество</a>
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Скидки</a>
               </nav>
@@ -145,18 +179,22 @@ export default function Shop() {
                 />
               </div>
               
-              <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
-                <Icon name="ShoppingCart" size={20} />
-              </Button>
+              <Link to="/cart" className="relative">
+                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
+                  <Icon name="ShoppingCart" size={20} />
+                  {state.items.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-electric-blue text-gaming-dark text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                      {state.items.reduce((sum, item) => sum + item.quantity, 0)}
+                    </span>
+                  )}
+                </Button>
+              </Link>
               
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="text-gray-300 hover:text-white"
-                onClick={() => window.location.href = '/profile'}
-              >
-                <Icon name="User" size={20} />
-              </Button>
+              <Link to="/profile">
+                <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
+                  <Icon name="User" size={20} />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
