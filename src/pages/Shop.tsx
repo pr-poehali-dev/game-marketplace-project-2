@@ -160,9 +160,12 @@ export default function Shop() {
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Скидки</a>
               </nav>
               
-              <Button variant="ghost" size="icon" className="lg:hidden text-gray-300 hover:text-white">
-                <Icon name="Menu" size={20} />
-              </Button>
+              <Link to="/" className="lg:hidden">
+                <Button variant="ghost" className="text-gray-300 hover:text-white">
+                  <Icon name="Store" size={20} className="mr-2" />
+                  Магазин
+                </Button>
+              </Link>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">

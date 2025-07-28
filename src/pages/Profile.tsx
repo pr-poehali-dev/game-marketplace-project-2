@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,9 +8,11 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Icon from "@/components/ui/icon";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Game {
   id: number;
@@ -164,10 +167,134 @@ const AchievementCard = ({ achievement }: { achievement: Achievement }) => {
   );
 };
 
+const TopUpDialog = () => {
+  const [amount, setAmount] = useState("");
+  const { state, updateBalance } = useAuth();
+
+  const handleTopUp = () => {
+    const topUpAmount = parseFloat(amount);
+    if (topUpAmount > 0 && state.user) {
+      updateBalance(state.user.balance + topUpAmount);
+      setAmount("");
+    }
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="bg-green-600 hover:bg-green-700 text-white">
+          <Icon name="Plus" size={16} className="mr-2" />
+          Пополнить
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-gaming-dark border-gaming-blue/30">
+        <DialogHeader>
+          <DialogTitle className="text-white">Пополнение кошелька</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="amount" className="text-gray-300">Сумма пополнения (₽)</Label>
+            <Input
+              id="amount"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="bg-gaming-blue/30 border-gaming-blue/50 text-white"
+              placeholder="1000"
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {[500, 1000, 2000].map((presetAmount) => (
+              <Button
+                key={presetAmount}
+                variant="outline"
+                onClick={() => setAmount(presetAmount.toString())}
+                className="border-gaming-blue/50 text-gray-300 hover:bg-gaming-blue/30"
+              >
+                {presetAmount}₽
+              </Button>
+            ))}
+          </div>
+          <div className="p-4 bg-gaming-blue/20 border border-gaming-blue/30 rounded-lg">
+            <h4 className="text-white font-medium mb-2">Способы оплаты:</h4>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Icon name="CreditCard" size={16} className="text-electric-blue" />
+                <span className="text-gray-300 text-sm">Карта Visa/MasterCard</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="Smartphone" size={16} className="text-electric-blue" />
+                <span className="text-gray-300 text-sm">SBP (Система быстрых платежей)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Icon name="Wallet" size={16} className="text-electric-blue" />
+                <span className="text-gray-300 text-sm">ЮMoney, QIWI</span>
+              </div>
+            </div>
+          </div>
+          <Button 
+            onClick={handleTopUp} 
+            className="w-full bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark font-semibold"
+            disabled={!amount || parseFloat(amount) <= 0}
+          >
+            Пополнить на {amount}₽
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export default function Profile() {
-  const { state } = useCart();
+  const { state: cartState } = useCart();
+  const { state: authState, logout, updateProfile } = useAuth();
+  const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState(authState.user?.username || "");
+  const [email, setEmail] = useState(authState.user?.email || "");
+  const [bio, setBio] = useState("Люблю RPG и стратегии");
+
   const totalHours = userGames.reduce((sum, game) => sum + game.hours, 0);
   const totalAchievements = achievements.filter(a => a.unlocked).length;
+
+  const handleSaveProfile = () => {
+    if (authState.user) {
+      updateProfile({
+        username: displayName,
+        email: email
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  if (!authState.isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gaming-dark to-gaming-blue flex items-center justify-center">
+        <Card className="w-full max-w-md bg-gaming-dark/90 border-gaming-blue/30">
+          <CardContent className="p-6 text-center">
+            <Icon name="Lock" size={48} className="text-electric-blue mx-auto mb-4" />
+            <h2 className="text-xl font-bold text-white mb-4">Необходима авторизация</h2>
+            <p className="text-gray-400 mb-6">Войдите в аккаунт для просмотра профиля</p>
+            <div className="space-y-2">
+              <Link to="/login" className="block">
+                <Button className="w-full bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark">
+                  Войти
+                </Button>
+              </Link>
+              <Link to="/register" className="block">
+                <Button variant="outline" className="w-full border-gaming-blue/50 text-gray-300">
+                  Регистрация
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gaming-dark to-gaming-blue font-roboto">
@@ -189,9 +316,12 @@ export default function Profile() {
                 <a href="#" className="text-gray-300 hover:text-electric-blue transition-colors">Скидки</a>
               </nav>
               
-              <Button variant="ghost" size="icon" className="lg:hidden text-gray-300 hover:text-white">
-                <Icon name="Menu" size={20} />
-              </Button>
+              <Link to="/" className="lg:hidden">
+                <Button variant="ghost" className="text-gray-300 hover:text-white">
+                  <Icon name="Store" size={20} className="mr-2" />
+                  Магазин
+                </Button>
+              </Link>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4">
@@ -211,9 +341,9 @@ export default function Profile() {
               <Link to="/cart" className="relative">
                 <Button variant="ghost" size="icon" className="text-gray-300 hover:text-white">
                   <Icon name="ShoppingCart" size={20} />
-                  {state.items.length > 0 && (
+                  {cartState.items.length > 0 && (
                     <span className="absolute -top-1 -right-1 bg-electric-blue text-gaming-dark text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                      {state.items.reduce((sum, item) => sum + item.quantity, 0)}
+                      {cartState.items.reduce((sum, item) => sum + item.quantity, 0)}
                     </span>
                   )}
                 </Button>
@@ -235,13 +365,33 @@ export default function Profile() {
           <Card className="bg-gaming-dark/50 border-gaming-blue/30">
             <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center gap-6">
-                <Avatar className="w-20 h-20 sm:w-24 sm:h-24">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>АП</AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <img 
+                    src={authState.user?.avatar || "/img/default-avatar.jpg"} 
+                    alt="Avatar"
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover"
+                  />
+                  <Button 
+                    size="icon" 
+                    className="absolute -bottom-2 -right-2 w-8 h-8 bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark rounded-full"
+                  >
+                    <Icon name="Camera" size={16} />
+                  </Button>
+                </div>
                 
                 <div className="flex-1 text-center sm:text-left">
-                  <h2 className="text-2xl sm:text-3xl font-inter font-bold text-white mb-2">Алексей Петров</h2>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                    <h2 className="text-2xl sm:text-3xl font-inter font-bold text-white">
+                      {authState.user?.username || "Пользователь"}
+                    </h2>
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 bg-gaming-blue/30 px-3 py-1 rounded-lg">
+                        <Icon name="Wallet" size={16} className="text-electric-blue" />
+                        <span className="text-white font-semibold">{authState.user?.balance || 0}₽</span>
+                      </div>
+                      <TopUpDialog />
+                    </div>
+                  </div>
                   <p className="text-gray-400 mb-4">Уровень 25 • Участник с марта 2023</p>
                   
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
@@ -344,7 +494,8 @@ export default function Profile() {
                     <Label htmlFor="displayName" className="text-gray-300">Отображаемое имя</Label>
                     <Input 
                       id="displayName" 
-                      defaultValue="Алексей Петров" 
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
                       className="bg-gaming-blue/30 border-gaming-blue/50 text-white"
                     />
                   </div>
@@ -353,7 +504,8 @@ export default function Profile() {
                     <Input 
                       id="email" 
                       type="email" 
-                      defaultValue="alexey@example.com" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="bg-gaming-blue/30 border-gaming-blue/50 text-white"
                     />
                   </div>
@@ -361,7 +513,8 @@ export default function Profile() {
                     <Label htmlFor="bio" className="text-gray-300">О себе</Label>
                     <Input 
                       id="bio" 
-                      defaultValue="Люблю RPG и стратегии" 
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
                       className="bg-gaming-blue/30 border-gaming-blue/50 text-white"
                     />
                   </div>
@@ -425,14 +578,21 @@ export default function Profile() {
                   <CardTitle className="text-white">Действия с аккаунтом</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Button className="w-full bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark">
+                  <Button 
+                    onClick={handleSaveProfile}
+                    className="w-full bg-electric-blue hover:bg-electric-blue/90 text-gaming-dark"
+                  >
                     Сохранить изменения
                   </Button>
                   <Button variant="outline" className="w-full border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-gaming-dark">
                     Изменить пароль
                   </Button>
-                  <Button variant="outline" className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white">
-                    Удалить аккаунт
+                  <Button 
+                    onClick={handleLogout}
+                    variant="outline" 
+                    className="w-full border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                  >
+                    Выйти из аккаунта
                   </Button>
                 </CardContent>
               </Card>
